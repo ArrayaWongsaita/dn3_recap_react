@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <NoteListPage /> },
       { path: "create", element: <CreateNotePage /> },
-      { path: ":noteId", element: <EditNotePage /> },
+      { path: "edit/:noteId", element: <EditNotePage /> },
     ],
   },
 ]);
