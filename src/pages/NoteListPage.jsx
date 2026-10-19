@@ -1,18 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAuthStore } from "../stores/authStore";
 import { apiClient } from "../api/client";
 import NoteDetail from "../components/NoteDetail";
 
 export default function NoteListPage() {
-  const token = useAuthStore((s) => s.token);
   const { data, isLoading } = useQuery({
     queryKey: ["notes"],
     queryFn: async () => {
-      const res = await apiClient.get("/notes", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await apiClient.get("/notes");
 
       return res.data.data.items;
     },
