@@ -3,16 +3,16 @@ import LoginPage from "./pages/LoginPage";
 import NoteListPage from "./pages/NoteListPage";
 import CreateNotePage from "./pages/CreateNotePage";
 import EditNotePage from "./pages/EditNotePage";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 export const router = createBrowserRouter([
   { index: true, element: <Navigate to="/login" /> },
   { path: "/login", element: <LoginPage /> },
   {
     path: "/notes",
     element: (
-      // <ProtectedRoute>
-      <Outlet />
-      // </ProtectedRoute>
+      <ProtectedRoute>
+        <Outlet />
+      </ProtectedRoute>
     ),
     children: [
       { index: true, element: <NoteListPage /> },
