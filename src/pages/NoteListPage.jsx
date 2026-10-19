@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "../stores/authStore";
 import { apiClient } from "../api/client";
+import NoteDetail from "../components/NoteDetail";
 
 export default function NoteListPage() {
   const token = useAuthStore((s) => s.token);
@@ -19,5 +20,11 @@ export default function NoteListPage() {
   console.log("data", data);
   if (isLoading) return <div>Loading . . .</div>;
 
-  return <div>NoteListPage</div>;
+  return (
+    <div>
+      {data.map((item) => (
+        <NoteDetail key={item.id} {...item} />
+      ))}
+    </div>
+  );
 }
