@@ -1,16 +1,19 @@
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { apiClient } from "../api/client";
+import { useNavigate } from "react-router";
+import { useAuthStore } from "../stores/authStore";
 
 const loginSchema = z.object({
   email: z.email(),
   password: z.string().trim().min(12),
 });
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const login = useAuthStore((s) => s.login);
   const {
     register,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
     handleSubmit,
   } = useForm({
     resolver: zodResolver(loginSchema),
@@ -21,8 +24,12 @@ export default function LoginPage() {
   });
 
   async function hdlLogin(data) {
-    const res = await apiClient.post("/auth/login", data);
-    console.log("res", res);
+    try {
+      await login(data);
+      navigate("/notes");
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
   return (
@@ -37,7 +44,7 @@ export default function LoginPage() {
         <input type="text" className="border" {...register("password")} />
         <p>{errors?.password?.message}</p>
       </div>
-      <button disabled={isLoading}>Login{isLoading && ". . ."}</button>
+      <button disabled={isSubmitting}>Login{isSubmitting && ". . ."}</button>
     </form>
   );
 }
